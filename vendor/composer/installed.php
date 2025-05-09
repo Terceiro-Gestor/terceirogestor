@@ -3,7 +3,7 @@
         'name' => 'wace/terceirogestor',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '24c80d6cc46cb580aa926608eb73d3b784a108b8',
+        'reference' => '4b3c0d1390b3f489136b576226e3e38aadfa18eb',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'wace/terceirogestor' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '24c80d6cc46cb580aa926608eb73d3b784a108b8',
+            'reference' => '4b3c0d1390b3f489136b576226e3e38aadfa18eb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
