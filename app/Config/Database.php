@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Database;
+namespace App\Config;
+
 use PDO;
 use PDOException;
 use Dotenv\Dotenv;
@@ -13,15 +14,15 @@ class Database
     {
         if (self::$instance === null) {
             // Carregar as variáveis de ambiente do .env
-            $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
             $dotenv->load();
 
             try {
                 self::$instance = new PDO(
-                    "mysql:host=" . $_ENV['DB_HOST'] . ";dbname=" . $_ENV['DB_NAME'],
-                    $_ENV['DB_USER'],
-                    $_ENV['DB_PASS']
-                );
+                "mysql:host=" . $_ENV['DB_HOST'] . ";port=" . $_ENV['DB_PORT'] . ";dbname=" . $_ENV['DB_NAME'],
+                $_ENV['DB_USER'],
+                $_ENV['DB_PASS']
+            );
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 die("Erro na conexão com o banco de dados: " . $e->getMessage());

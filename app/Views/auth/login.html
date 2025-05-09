@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <!-- Vue.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
 </head>
+
 <body class="bg-gray-100">
     <div id="app" class="flex items-center justify-center min-h-screen">
         <div class="w-full max-w-md p-8 bg-white rounded shadow-md">
@@ -44,6 +46,7 @@
             },
             methods: {
                 async submitForm() {
+                    this.errorMessage = '';
                     try {
                         const response = await fetch('/login', {
                             method: 'POST',
@@ -57,12 +60,15 @@
                         });
 
                         if (response.ok) {
-                            window.location.href = '/';
+                            const data = await response.json();
+                            console.log(data); // Verificar o conteúdo da resposta
+                            window.location.href = data.redirect;
                         } else {
                             const data = await response.json();
                             this.errorMessage = data.message || 'Erro ao fazer login.';
                         }
                     } catch (error) {
+                        console.error(error);
                         this.errorMessage = 'Erro ao conectar ao servidor.';
                     }
                 }
@@ -72,4 +78,5 @@
         app.mount('#app');
     </script>
 </body>
+
 </html>

@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Models;
-use PDO;
+
 use App\Config\Database;
+use PDO;
+
 
 class User
 {

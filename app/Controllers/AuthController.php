@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\User;
 
 class AuthController
@@ -12,20 +13,21 @@ class AuthController
 
     public function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+        $data = json_decode(file_get_contents('php://input'), true);
 
-            $user = User::findByEmail($email);
+        $email = $data['email'] ?? '';
+        $password = $data['password'] ?? '';
 
-            if ($user && password_verify($password, $user['password'])) {
-                session_start();
-                $_SESSION['user'] = $user;
-                header('Location: /');
-                exit;
-            } else {
-                echo "Credenciais inválidas.";
-            }
+        // Buscar o usuário pelo e-mail
+        $user = User::findByEmail($email);
+
+        if ($user && password_verify($password, $user['password'])) {
+            session_start();
+            $_SESSION['user'] = $user;
+            echo json_encode(['redirect' => '/painel']);
+        } else {
+            http_response_code(401);
+            echo json_encode(['message' => 'E-mail ou senha invalidos.']);
         }
     }
 
