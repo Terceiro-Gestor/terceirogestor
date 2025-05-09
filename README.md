@@ -1,25 +1,44 @@
-# Laravel + Vue Starter Kit
+# 🌟 Terceiro Gestor
 
-## Introduction
+**Terceiro Gestor** é um sistema inovador para a gestão de ONGs, projetado para facilitar o gerenciamento de recursos, projetos e pessoas, promovendo impacto social de forma eficiente e organizada.
 
-Our Vue starter kit provides a robust, modern starting point for building Laravel applications with a Vue frontend using [Inertia](https://inertiajs.com).
+---
 
-Inertia allows you to build modern, single-page Vue applications using classic server-side routing and controllers. This lets you enjoy the frontend power of Vue combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+## 🚀 Funcionalidades Principais
 
-This Vue starter kit utilizes Vue 3 and the Composition API, TypeScript, Tailwind, and the [shadcn-vue](https://www.shadcn-vue.com) component library.
+- 📋 **Gestão de Projetos**: Controle completo sobre os projetos da ONG, com acompanhamento de progresso e resultados.
+- 👥 **Gerenciamento de Voluntários**: Cadastro, organização e comunicação com voluntários.
+- 💰 **Controle Financeiro**: Monitoramento de doações, despesas e relatórios financeiros.
+- 📊 **Relatórios e Análises**: Geração de relatórios detalhados para tomada de decisão.
+- 🌐 **Acesso Online**: Sistema acessível de qualquer lugar, com interface amigável e responsiva.
 
-## Official Documentation
+---
 
-Documentation for all Laravel starter kits can be found on the [Laravel website](https://laravel.com/docs/starter-kits).
+## 🎯 Objetivo do Projeto
 
-## Contributing
+O **Terceiro Gestor** foi criado para ajudar ONGs a maximizar seu impacto social, oferecendo ferramentas que simplificam a administração e permitem que as organizações foquem no que realmente importa: **transformar vidas**.
 
-Thank you for considering contributing to our starter kit! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠️ Tecnologias Utilizadas
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Backend**: Laravel (PHP)
+- **Frontend**: Vite + Vue.js/React (dependendo da implementação)
+- **Banco de Dados**: MySQL/PostgreSQL
+- **Outras Ferramentas**: Composer, Node.js, Ziggy
 
-## License
+---
 
-The Laravel + Vue starter kit is open-sourced software licensed under the MIT license.
+## 📦 Como Instalar e Rodar o Projeto
+
+### Pré-requisitos
+- PHP 8.0 ou superior
+- Composer
+- Node.js e npm
+- Banco de dados MySQL ou PostgreSQL
+
+### Passos
+1. Clone o repositório:
+   ```sh
+   git clone https://github.com/seu-usuario/terceiro-gestor.git
+   cd terceiro-gestor
