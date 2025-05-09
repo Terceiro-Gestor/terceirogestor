@@ -1,0 +1,17 @@
+{
+    "name": "wace/terceirogestor",
+    "autoload": {
+        "psr-4": {
+            "Wace\\Terceirogestor\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "wevertoncamposdev",
+            "email": "wevertoncamposdev@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
