@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../config/Database.php';
+namespace App\Models;
+use PDO;
+use App\Config\Database;
 
 class User
 {

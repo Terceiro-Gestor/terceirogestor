@@ -2,7 +2,7 @@
     "name": "wace/terceirogestor",
     "autoload": {
         "psr-4": {
-            "Wace\\Terceirogestor\\": "src/"
+            "App\\": "app/"
         }
     },
     "authors": [
