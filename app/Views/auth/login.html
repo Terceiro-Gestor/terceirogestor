@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Terceiro Gestor</title>
+    <!-- Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Vue.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+</head>
+<body class="bg-gray-100">
+    <div id="app" class="flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-md p-8 bg-white rounded shadow-md">
+            <h1 class="text-2xl font-bold text-center mb-6">Login</h1>
+            <form @submit.prevent="submitForm">
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <input type="email" id="email" v-model="email" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                    <input type="password" id="password" v-model="password" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Entrar
+                </button>
+            </form>
+            <p v-if="errorMessage" class="mt-4 text-red-500 text-sm text-center">{{ errorMessage }}</p>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    email: '',
+                    password: '',
+                    errorMessage: ''
+                };
+            },
+            methods: {
+                async submitForm() {
+                    try {
+                        const response = await fetch('/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: this.email,
+                                password: this.password
+                            })
+                        });
+
+                        if (response.ok) {
+                            window.location.href = '/';
+                        } else {
+                            const data = await response.json();
+                            this.errorMessage = data.message || 'Erro ao fazer login.';
+                        }
+                    } catch (error) {
+                        this.errorMessage = 'Erro ao conectar ao servidor.';
+                    }
+                }
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>
