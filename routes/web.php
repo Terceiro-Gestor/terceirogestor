@@ -7,4 +7,7 @@ return [
     '/sobre' => function () {
         echo "Sobre o Terceiro Gestor.";
     },
+    '/entrar' => function () {
+        echo "Sobre o Terceiro Gestor.";
+    },
 ];
