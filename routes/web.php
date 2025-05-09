@@ -8,6 +8,6 @@ return [
         echo "Sobre o Terceiro Gestor.";
     },
     '/entrar' => function () {
-        echo "Sobre o Terceiro Gestor.";
+        echo "Tela de Acesso ao Sistema Terceiro Gestor.";
     },
 ];
