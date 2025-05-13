@@ -13,7 +13,7 @@ async function loadComponent(url) {
 (async () => {
     app.component("header-component", await loadComponent("/app/Views/components/header.html"));
     app.component("footer-component", await loadComponent("/app/Views/components/footer.html"));
-
+    app.component("menu-component", await loadComponent("/app/Views/components/menu.html"));
     // Montar o Vue no elemento com ID "app"
     app.mount("#app");
 })();

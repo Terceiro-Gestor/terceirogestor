@@ -15,6 +15,6 @@ class MainController
 
     public function painel()
     {
-        require_once __DIR__ . '/../Views/painel.html';
+        require_once __DIR__ . '/../Views/page/painel.html';
     }
 }

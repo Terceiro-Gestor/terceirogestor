@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Terceiro Gestor</title>
     <!-- Tailwind CSS via CDN -->
     <link href="/public/assets/css/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+
+<body id="app" class="bg-gray-100">
+    <menu-component></menu-component>
     <div class="min-h-screen flex items-center justify-center">
+        <!-- Menu Lateral -->
+
         <div class="text-center">
             <h1 class="text-3xl font-bold mb-4">Bem-vindo ao Dashboard!</h1>
             <p class="text-gray-700">Você está autenticado no sistema.</p>
-            <a href="/sair" class="mt-6 inline-block bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
-                Sair
-            </a>
         </div>
     </div>
+
+    <!-- Vue Global -->
+    <script src="/public/assets/js/vue.global.js"></script>
+    <script src="/public/assets/js/app.js"></script>
 </body>
+
 </html>
