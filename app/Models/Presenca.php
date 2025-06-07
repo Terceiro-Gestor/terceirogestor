@@ -27,7 +27,7 @@ class Presenca
               pr.situacao,
               pr.mes,
               pr.ano,
-              DAY(pr.data) AS dia
+              pr.dia
             FROM presencas pr
             JOIN pessoas p ON p.idpessoa = pr.pessoas_idpessoa
             WHERE pr.matriculas_idmatricula = :matricula

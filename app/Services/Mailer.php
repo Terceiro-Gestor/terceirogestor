@@ -4,79 +4,106 @@ namespace App\Services;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use Dotenv\Dotenv;
 
 class Mailer
 {
-    private PHPMailer $mail;
+    private PHPMailer $mailer;
 
     public function __construct()
     {
-
-        // Carregar as variáveis de ambiente do .env
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-        $dotenv->load();
-        $this->mail = new PHPMailer(true);
-        $this->configurarSMTP();
+        $this->initializeMailer();
+        $this->configureSMTP();
     }
 
-    private function configurarSMTP(): void
+    /** Cria a instância do PHPMailer */
+    private function initializeMailer(): void
     {
-        $this->mail->isSMTP();
-        $this->mail->Host       = $_ENV['SMTP_HOST'];
-        $this->mail->SMTPAuth   = true;
-        $this->mail->Username   = $_ENV['SMTP_USER'];
-        $this->mail->Password   = $_ENV['SMTP_PASS'];
-        $this->mail->SMTPSecure = 'tls';
-        $this->mail->Port       = $_ENV['SMTP_PORT'];
-        $this->mail->CharSet = 'UTF-8';
-        $fromEmail = $_ENV['SMTP_FROM_EMAIL'] ?: 'default@example.com';
-        $fromName = $_ENV['SMTP_FROM_NAME'] ?: 'Sistema';
-        $this->mail->setFrom($fromEmail, $fromName);
+        $this->mailer = new PHPMailer(true);
+    }
+
+    /** Configura o PHPMailer para envio via SMTP usando variáveis do .env */
+    private function configureSMTP(): void
+    {
+        $this->mailer->isSMTP();
+        $this->mailer->Host       = $_ENV['SMTP_HOST']       ?? '';
+        $this->mailer->SMTPAuth   = true;
+        $this->mailer->Username   = $_ENV['SMTP_USER']       ?? '';
+        $this->mailer->Password   = $_ENV['SMTP_PASS']       ?? '';
+        $this->mailer->SMTPSecure = 'tls';
+        $this->mailer->Port       = $_ENV['SMTP_PORT']       ?? 587;
+        $this->mailer->CharSet    = 'UTF-8';
+        $this->mailer->setFrom($_ENV['SMTP_FROM_EMAIL'] ?? '', $_ENV['SMTP_FROM_NAME'] ?? 'Mailer');
+    }
+
+    /** Prepara remetente, assunto, corpo e formato (texto ou HTML) */
+    private function prepareEmail(string $recipient, string $subject, string $body, bool $isHtml = false): void
+    {
+        $this->mailer->clearAllRecipients();
+        $this->mailer->clearAttachments();
+        $this->mailer->addAddress($recipient);
+        $this->mailer->Subject = $subject;
+        $this->mailer->Body    = $body;
+        $this->mailer->isHTML($isHtml);
     }
 
     /**
-     * Envia e-mail com anexo
-     *
-     * @param string $para      E-mail de destino
-     * @param string $assunto   Assunto do e-mail
-     * @param string $mensagem  Corpo do e-mail (pode ser HTML)
-     * @param string $pdfBin    Conteúdo binário do PDF (opcional)
-     * @param string $nomePdf   Nome do arquivo do PDF (opcional)
+     * Adiciona um anexo.
+     * Aceita dois formatos de array:
+     *   ['path' => '/caminho/arquivo.pdf']  — arquivo já existente
+     *   ['content' => $binario, 'filename' => 'relatorio.pdf'] — conteúdo em memória
      */
-    public function enviar(
-        string $para,
-        string $assunto,
-        string $mensagem,
-        ?string $pdfBin = null,
-        string $nomePdf = 'relatorio.pdf'
+    private function attachFile(array $file): void
+    {
+        if (isset($file['path'])) {
+            $this->mailer->addAttachment($file['path'], $file['filename'] ?? basename($file['path']));
+            return;
+        }
+
+        if (isset($file['content'], $file['filename'])) {
+            $tempFile = $this->createTempFile($file['content'], $file['filename']);
+            $this->mailer->addAttachment($tempFile, $file['filename']);
+            register_shutdown_function(static fn() => @unlink($tempFile));
+            return;
+        }
+
+        throw new \InvalidArgumentException(
+            "Attachment must contain either 'path', or 'content' and 'filename'."
+        );
+    }
+
+    /** Cria um arquivo temporário com conteúdo binário e devolve o caminho */
+    private function createTempFile(string $content, string $filename): string
+    {
+        $tempFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('attach_', true) . '_' . $filename;
+        file_put_contents($tempFile, $content);
+        return $tempFile;
+    }
+
+    /**
+     * Envia o e‑mail.
+     *
+     * @param string      $recipient   Endereço de destino
+     * @param string      $subject     Assunto
+     * @param string      $body        Corpo do e‑mail
+     * @param array|null  $attachments Cada item: ['path' => ...] ou ['content' => ..., 'filename' => ...]
+     * @param bool        $isHtml      Define se o corpo é HTML
+     * @throws Exception  Lança exceções do PHPMailer
+     */
+    public function send(
+        string $recipient,
+        string $subject,
+        string $body,
+        ?array $attachments = null,
+        bool $isHtml = false
     ): void {
-        $this->mail->clearAllRecipients();
-        $this->mail->clearAttachments();
+        $this->prepareEmail($recipient, $subject, $body, $isHtml);
 
-        $this->mail->addAddress($para);
-        $this->mail->Subject = $assunto;
-        $this->mail->Body    = $mensagem;
-        $this->mail->isHTML(false);
-
-        if (!$pdfBin) {
-            throw new \Exception("PDF está vazio.");
+        if (!empty($attachments)) {
+            foreach ($attachments as $file) {
+                $this->attachFile($file);   // <- passa o array completo
+            }
         }
 
-        if ($pdfBin) {
-            // Define um caminho fixo para salvar o PDF
-            $caminho = __DIR__ . '/../../';
-
-            // Salva o PDF no caminho definido
-            file_put_contents($caminho, $pdfBin);
-
-            $this->mail->addAttachment($tmp, $nomePdf);
-        }
-
-        $this->mail->send();
-
-        if (isset($tmp)) {
-            @unlink($tmp);
-        }
+        $this->mailer->send();
     }
 }
